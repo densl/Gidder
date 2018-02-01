@@ -152,18 +152,20 @@ public class AddUserActivity extends BaseActivity {
 			Log.e(TAG, "Error retrieving user with id " + userId, e);
 			return;
 		}
-		
+
 		fullnameEditText.setText(user.getFullname());
 		emailEditText.setText(user.getEmail());
 		usernameEditText.setText(user.getUsername());
-        publickeyEditText.setText(user.getPublickey());
-
-		String password = user.getPassword();
-		if(password != null && password.length() > 16) {
-			passwordEditText.setHint("SHA1: " + password.substring(0, 16) + "...");
-		} else {
-			passwordEditText.setHint("SHA1: " + password);
-		}
+//        publickeyEditText.setText(user.getPublickey());
+		String secretString = "********";
+		publickeyEditText.setText(secretString);
+		passwordEditText.setHint(secretString);
+//		String password = user.getPassword();
+//		if(password != null && password.length() > 16) {
+//			passwordEditText.setHint("SHA1: " + password.substring(0, 16) + "...");
+//		} else {
+//			passwordEditText.setHint("SHA1: " + password);
+//		}
 		activateCheckox.setChecked(user.isActive());
 		
 	}
