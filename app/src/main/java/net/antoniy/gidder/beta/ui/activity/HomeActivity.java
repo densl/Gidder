@@ -224,6 +224,9 @@ public class HomeActivity extends BaseActivity {
 	    }
 
 	    eulaDialog = new SimpleEula(this).show();
+
+		// init when resume
+		initComponents(null);
 	}
 	
 	@Override
