@@ -1,5 +1,6 @@
 package net.antoniy.gidder.beta.receiver;
 
+import net.antoniy.gidder.beta.service.SSHDaemonService;
 import net.antoniy.gidder.beta.ui.util.C;
 import net.antoniy.gidder.beta.ui.util.GidderCommons;
 import android.content.BroadcastReceiver;
@@ -17,13 +18,13 @@ public class ToggleSSHServerBroadcastReceiver extends BroadcastReceiver {
 
 		if (action.equals(C.action.TOGGLE_SSH_SERVER)) {
 			if(GidderCommons.isSshServiceRunning(context)) {
-				context.stopService(new Intent(C.action.START_SSH_SERVER));
+				context.stopService(new Intent(context, SSHDaemonService.class));
 				Log.i(TAG, "Broadcast - stop service!");
 			} else if (!GidderCommons.isWifiReady(context)) {
 				Toast.makeText(context, "WiFi is NOT connected!", Toast.LENGTH_SHORT).show();
 				Log.i(TAG, "Broadcast failed - wifi is NOT connected!");
 			} else {
-				context.startService(new Intent(C.action.START_SSH_SERVER));
+				context.startService(new Intent(context, SSHDaemonService.class));
 				Log.i(TAG, "Broadcast - start service!");
 			}
 		}
