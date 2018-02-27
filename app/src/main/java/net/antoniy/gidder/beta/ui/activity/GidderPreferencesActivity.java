@@ -17,7 +17,8 @@ import com.actionbarsherlock.view.MenuItem;
 public class GidderPreferencesActivity extends SherlockPreferenceActivity implements OnSharedPreferenceChangeListener {
 
 	private EditTextPreference sshPortPreferences;
-	
+	private EditTextPreference gitRepositoriesDirPreferences;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		setTheme(R.style.Theme_Sherlock);
@@ -29,7 +30,8 @@ public class GidderPreferencesActivity extends SherlockPreferenceActivity implem
 		addPreferencesFromResource(R.xml.preferences);
 		
 		sshPortPreferences = (EditTextPreference) getPreferenceScreen().findPreference(PrefsConstants.SSH_PORT.getKey());
-		
+		gitRepositoriesDirPreferences = (EditTextPreference) getPreferenceScreen().findPreference(PrefsConstants.GIT_REPOSITORIES_DIR.getKey());
+
 		Preference helpButton = (Preference)findPreference(PrefsConstants.HELP.getKey());
 		helpButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 				@Override
@@ -59,7 +61,8 @@ public class GidderPreferencesActivity extends SherlockPreferenceActivity implem
 		SharedPreferences prefs = getPreferenceScreen().getSharedPreferences();
 		
 		sshPortPreferences.setSummary("SSH server port: " + prefs.getString(PrefsConstants.SSH_PORT.getKey(), PrefsConstants.SSH_PORT.getDefaultValue()));
-		
+		gitRepositoriesDirPreferences.setSummary("Repositories: " + prefs.getString(PrefsConstants.GIT_REPOSITORIES_DIR.getKey(), PrefsConstants.GIT_REPOSITORIES_DIR.getDefaultValue()));
+
 		getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
 	}
 	
@@ -72,9 +75,12 @@ public class GidderPreferencesActivity extends SherlockPreferenceActivity implem
 
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-		if(key.equals(PrefsConstants.SSH_PORT)) {
+		if (key.equals(PrefsConstants.SSH_PORT.getKey())) {
 			sshPortPreferences.setSummary("SSH server port: " + sharedPreferences.getString(
 					PrefsConstants.SSH_PORT.getKey(), PrefsConstants.SSH_PORT.getDefaultValue()));
+		} else if (key.equals(PrefsConstants.GIT_REPOSITORIES_DIR.getKey())) {
+			gitRepositoriesDirPreferences.setSummary("Repositories: " + sharedPreferences.getString(
+					PrefsConstants.GIT_REPOSITORIES_DIR.getKey(), PrefsConstants.GIT_REPOSITORIES_DIR.getDefaultValue()));
 		}
 	}
 

@@ -10,10 +10,11 @@
 		    android:summaryOff="@string/click_to_enable"
 		    android:defaultValue="true"/>
 		
-<!--         <EditTextPreference  -->
-<!--             android:key="git_repositories_dir" -->
-<!--             android:title="@string/settings_git_repositories_directory" -->
-<!--             android:defaultValue="/sdcard/gidder/repositories"/> -->
+         <EditTextPreference
+             android:key="git_repositories_dir"
+             android:title="@string/settings_git_repositories_directory"
+			 android:selectAllOnFocus="true"
+             android:defaultValue="/sdcard/gidder/repositories"/>
 		
     </PreferenceCategory>
     
@@ -22,6 +23,8 @@
         <EditTextPreference 
             android:key="ssh_port"
             android:title="@string/settings_ssh_server_port"
+			android:numeric="integer"
+			android:selectAllOnFocus="true"
             android:defaultValue="2222"/>
         
 <!-- 		<CheckBoxPreference  -->
