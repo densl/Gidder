@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/antoniy/Gidder.svg?branch=master)](https://travis-ci.org/antoniy/Gidder)
+[![Build Status](https://travis-ci.org/densl/Gidder.svg?branch=work)](https://travis-ci.org/densl/Gidder)
 
 Gidder
 ======
