@@ -56,6 +56,11 @@
 		    android:key="help_tutorial"
 		    android:title="Help"
 		    android:summary="Watch a video tutorial."/>
+
+		<Preference
+			android:key="import_repositories"
+			android:title="Import repositories"
+			android:summary="Import repositories from directory."/>
 		
     </PreferenceCategory>
 

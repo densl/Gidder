@@ -1,6 +1,8 @@
 package net.antoniy.gidder.beta.ui.util;
 
 import net.antoniy.gidder.beta.R;
+import net.antoniy.gidder.beta.db.DBHelper;
+import net.antoniy.gidder.beta.db.entity.Repository;
 import net.antoniy.gidder.beta.service.SSHDaemonService;
 
 import org.bouncycastle.crypto.digests.SHA1Digest;
@@ -25,6 +27,10 @@ import android.support.v4.app.NotificationCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.WindowManager;
+import android.widget.Toast;
+
+import java.io.File;
+import java.sql.SQLException;
 
 public abstract class GidderCommons {
 	private final static int SSH_STARTED_NOTIFICATION_ID = 1;
@@ -219,5 +225,37 @@ public abstract class GidderCommons {
 	public static void stopStatusBarNotification(Context context) {
 		NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		notificationManager.cancel(SSH_STARTED_NOTIFICATION_ID);
+	}
+
+	public static void importRepositoriesFromDirectory(Context context, String dir) {
+		File basePath = new File(dir);
+		if(!basePath.exists() || !basePath.isDirectory()) {
+			return;
+		}
+		//
+		int counter = 0;
+		File[] fileList = basePath.listFiles();
+		DBHelper dbHelper = new DBHelper(context);
+		for (File file : fileList) {
+			if (!file.isDirectory() || !file.getName().endsWith(".git")) {
+				continue;
+			}
+
+			String mapping = file.getName().replace(".git", "");
+			Repository checkRepository = null;
+			try {
+				checkRepository = dbHelper.getRepositoryDao().queryForMapping(mapping);
+				if(checkRepository != null) {
+					continue;
+				}
+				// here create in db
+				dbHelper.getRepositoryDao().create(
+						new Repository(0, mapping, mapping, "", true, System.currentTimeMillis()));
+				counter++;
+			} catch (SQLException e) {
+				continue;
+			}
+		}
+		Toast.makeText(context, "Success import  " + counter + "  repositories",Toast.LENGTH_SHORT).show();
 	}
 }

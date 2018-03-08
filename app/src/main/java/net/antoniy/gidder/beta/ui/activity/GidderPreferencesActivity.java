@@ -19,6 +19,8 @@ public class GidderPreferencesActivity extends SherlockPreferenceActivity implem
 	private EditTextPreference sshPortPreferences;
 	private EditTextPreference gitRepositoriesDirPreferences;
 
+	private SharedPreferences mPrefs;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		setTheme(R.style.Theme_Sherlock);
@@ -40,6 +42,18 @@ public class GidderPreferencesActivity extends SherlockPreferenceActivity implem
 				    return true;
 				}
 			});
+
+		mPrefs = getPreferenceScreen().getSharedPreferences();
+		Preference importButton = (Preference)findPreference(PrefsConstants.IMPORT_REPOSITORIES.getKey());
+		importButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+			@Override
+			public boolean onPreferenceClick(Preference arg0) {
+				String directory = mPrefs.getString(PrefsConstants.GIT_REPOSITORIES_DIR.getKey(),
+						PrefsConstants.GIT_REPOSITORIES_DIR.getDefaultValue());
+				GidderCommons.importRepositoriesFromDirectory(GidderPreferencesActivity.this, directory);
+				return true;
+			}
+		});
 	}
 	
 	@Override

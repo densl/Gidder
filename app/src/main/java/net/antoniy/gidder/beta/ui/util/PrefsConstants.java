@@ -17,8 +17,9 @@ public enum PrefsConstants {
 	
 	AUTOSTART_ON_WIFI_ON("autostart_on_wifi_on", "false"),
 	AUTOSTOP_ON_WIFI_OFF("autostop_on_wifi_off", "false"),
-	
-	HELP("help_tutorial", "");
+
+	HELP("help_tutorial", ""),
+	IMPORT_REPOSITORIES("import_repositories", "");
 	
 	private final String key;
 	private final String defaultValue;
