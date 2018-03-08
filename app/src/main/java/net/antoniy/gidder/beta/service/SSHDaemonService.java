@@ -170,6 +170,18 @@ public class SSHDaemonService extends Service implements PasswordAuthenticator, 
                     return false;
                 }
 
+	            // check second public key
+	            boolean isPublicKey2 = false;
+	            if(user.getPublickey2() == null || "".equals(user.getPublickey2().trim())) {
+		            isPublicKey2 = false;
+	            } else {
+		            PublicKey knownkey2 = decodePublicKey(user.getPublickey2());
+		            isPublicKey2 = ((RSAPublicKey) knownkey2).getModulus().equals(((RSAPublicKey) key).getModulus());
+	            }
+	            if (isPublicKey2) {
+		            return isPublicKey2;
+	            }
+
                 if(user.getPublickey() == null || "".equals(user.getPublickey().trim())) {
                     return false;
                 }

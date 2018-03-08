@@ -42,9 +42,12 @@ public class AddUserActivity extends BaseActivity {
 	private EditText usernameEditText;
 	private EditText passwordEditText;
     private EditText publickeyEditText;
+	private EditText publickey2EditText;
 	private boolean editMode = false;
 	private int userId;
 	private CheckBox activateCheckox;
+
+	private String secretString = "********";
 	
 	@Override
 	protected void setup() {
@@ -72,6 +75,7 @@ public class AddUserActivity extends BaseActivity {
 		passwordEditText = (EditText) findViewById(R.id.addUserPassword);
         publickeyEditText = (EditText) findViewById(R.id.addUserPublickey);
 		activateCheckox = (CheckBox) findViewById(R.id.addUserActivate);
+		publickey2EditText = (EditText) findViewById(R.id.addUserPublickey2);
 		
 		if(editMode) {
 			populateFieldsWithUserData();
@@ -157,8 +161,8 @@ public class AddUserActivity extends BaseActivity {
 		emailEditText.setText(user.getEmail());
 		usernameEditText.setText(user.getUsername());
 //        publickeyEditText.setText(user.getPublickey());
-		String secretString = "********";
 		publickeyEditText.setText(secretString);
+		publickey2EditText.setText(secretString);
 		passwordEditText.setHint(secretString);
 //		String password = user.getPassword();
 //		if(password != null && password.length() > 16) {
@@ -180,6 +184,7 @@ public class AddUserActivity extends BaseActivity {
 		String username = usernameEditText.getText().toString().trim();
 		String password = passwordEditText.getText().toString().trim();
         String publickey = publickeyEditText.getText().toString().trim();
+		String publickey2 = publickey2EditText.getText().toString().trim();
         Log.i(TAG, "read publickey: " + publickey);
 		boolean active = activateCheckox.isChecked();
 		
@@ -202,6 +207,11 @@ public class AddUserActivity extends BaseActivity {
                     Toast.makeText(AddUserActivity.this, "Public Key already exists.", Toast.LENGTH_SHORT).show();
                     return;
                 }
+				checkUser = getHelper().getUserDao().queryForPublickey(publickey2EditText.getText().toString().trim());
+				if(checkUser != null && checkUser.getId() != userId) {
+					Toast.makeText(AddUserActivity.this, "Public Key2 already exists.", Toast.LENGTH_SHORT).show();
+					return;
+				}
 			} catch (SQLException e) {
 				Log.e(TAG, "SQL problem.", e);
 				Toast.makeText(AddUserActivity.this, "Database error.", Toast.LENGTH_SHORT).show();
@@ -213,12 +223,15 @@ public class AddUserActivity extends BaseActivity {
 				user.setFullname(fullname);
 				user.setEmail(email);
 				
-				if(password != null && !"".equals(password.trim())) {
+				if(password != null && !"".equals(password.trim()) && !secretString.equals(password.trim())) {
 					user.setPassword(GidderCommons.generateSha1(password));
 				}
-                if(publickey != null && !"".equals(publickey)) {
+                if(publickey != null && !"".equals(publickey) && !secretString.equals(publickey.trim())) {
                     user.setPublickey(publickey);
                 }
+				if(publickey2 != null && !"".equals(publickey2) && !secretString.equals(publickey2.trim())) {
+					user.setPublickey2(publickey2);
+				}
 				user.setUsername(username);
 				user.setActive(active);
 				
@@ -247,6 +260,11 @@ public class AddUserActivity extends BaseActivity {
                     Toast.makeText(AddUserActivity.this, "Public Key already exists.", Toast.LENGTH_SHORT).show();
                     return;
                 }
+				checkUser = getHelper().getUserDao().queryForPublickey(publickey2EditText.getText().toString().trim());
+				if(checkUser != null && checkUser.getId() != userId) {
+					Toast.makeText(AddUserActivity.this, "Public Key2 already exists.", Toast.LENGTH_SHORT).show();
+					return;
+				}
 			} catch (SQLException e) {
 				Log.e(TAG, "SQL problem.", e);
 				Toast.makeText(AddUserActivity.this, "Database error.", Toast.LENGTH_SHORT).show();
@@ -254,7 +272,7 @@ public class AddUserActivity extends BaseActivity {
 			}
 			
 			try {
-				getHelper().getUserDao().create(new User(0, fullname, email, username, GidderCommons.generateSha1(password), publickey, active, System.currentTimeMillis()));
+				getHelper().getUserDao().create(new User(0, fullname, email, username, GidderCommons.generateSha1(password), publickey, publickey2, active, System.currentTimeMillis()));
 			} catch (SQLException e) {
 				Log.e(TAG, "Problem when add user.", e);
 				finish();

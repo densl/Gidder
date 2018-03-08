@@ -10,7 +10,8 @@ public final class DBC {
 		public final static String column_email 		= "g_email";
 		public final static String column_username 		= "g_username";
 		public final static String column_password 		= "g_password";
-                public final static String column_publickey     = "g_publickey";
+		public final static String column_publickey     = "g_publickey";
+		public final static String column_publickey2    = "g_publickey2";
 		public final static String column_active 		= "g_active";
 		public final static String column_create_date	= "g_create_date";
 	}

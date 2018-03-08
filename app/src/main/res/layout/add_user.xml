@@ -81,7 +81,24 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:lines="1"
+            android:selectAllOnFocus="true"
             android:inputType="text"/>
+
+		<TextView
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/add_user_publickey2"
+			android:layout_marginTop="8dp"
+			android:textSize="16sp"
+			android:textColor="@android:color/primary_text_dark"/>
+
+		<EditText
+			android:id="@+id/addUserPublickey2"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:lines="1"
+			android:selectAllOnFocus="true"
+			android:inputType="text"/>
 
 		<CheckBox 
 		    android:id="@+id/addUserActivate"

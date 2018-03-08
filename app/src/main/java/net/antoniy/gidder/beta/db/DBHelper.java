@@ -21,7 +21,7 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 	private final static String TAG = DBHelper.class.getSimpleName();
 	
 	private final static String DB_NAME = "gidder.db";
-	private final static int DB_VERSION = 20150210;
+	private final static int DB_VERSION = 20180308;
 	
 	private UserDao userDao;
 	private RepositoryDao repositoryDao;
@@ -44,6 +44,18 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 	
 	@Override
 	public void onUpgrade(SQLiteDatabase database, ConnectionSource connectionSource, int oldVersion, int newVersion) {
+		// deal with special db version upgrade
+		if (oldVersion == 20150210 && newVersion == 20180308) {
+			try {
+				String sql = "alter table users add g_publickey2 text";
+				getDao(User.class).executeRawNoArgs(sql);
+				// return if success
+				return;
+			} catch (SQLException e) {
+				Log.e(TAG, "Unable to upgrade database from version " + oldVersion + " to new " + newVersion, e);
+			}
+		}
+
 		try {
 			TableUtils.dropTable(connectionSource, User.class, true);
 			TableUtils.dropTable(connectionSource, Repository.class, true);
@@ -80,4 +92,6 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 		
 		return permissionDao;
 	}
+
+
 }

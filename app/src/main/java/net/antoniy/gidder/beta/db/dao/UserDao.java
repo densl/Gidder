@@ -63,6 +63,13 @@ public class UserDao extends BaseDao<DBHelper, User, Integer>{
             return users.get(0);
         }
 
+	    // for second public key
+	    SelectArg publickeyArg2 = new SelectArg(publickey);
+	    List<User> usersSecond = dao.queryBuilder().where().eq(DBC.users.column_publickey2, publickeyArg2).query();
+	    if(usersSecond.size() > 0) {
+		    return usersSecond.get(0);
+	    }
+
         return null;
     }
 	

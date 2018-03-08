@@ -31,6 +31,9 @@ public class User implements Serializable {
     @DatabaseField(columnName = DBC.users.column_publickey, canBeNull = true, unique = true)
     private String publickey;
 
+	@DatabaseField(columnName = DBC.users.column_publickey2, canBeNull = true, unique = true, defaultValue = "")
+	private String publickey2;
+
 	@DatabaseField(columnName = DBC.users.column_active, canBeNull = false, defaultValue = "false")
 	private boolean active;
 
@@ -44,13 +47,14 @@ public class User implements Serializable {
 	}
 
     public User(int id, String fullname, String email, String username,
-                String password, String publickey, boolean active, long createDate) {
+                String password, String publickey, String publickey2, boolean active, long createDate) {
         this.id = id;
         this.fullname = fullname;
         this.email = email;
         this.username = username;
         this.password = password;
         this.publickey = publickey;
+	    this.publickey2 = publickey2;
         this.active = active;
         this.createDate = createDate;
     }
@@ -58,7 +62,7 @@ public class User implements Serializable {
     // left in for compatibility
 	public User(int id, String fullname, String email, String username,
 			String password, boolean active, long createDate) {
-		this(id, fullname, email, username, password, null, active, createDate);
+		this(id, fullname, email, username, password, null, null, active, createDate);
 	}
 
 	public int getId() {
@@ -104,6 +108,10 @@ public class User implements Serializable {
     public String getPublickey() { return publickey; }
 
     public void setPublickey(String publickey) { this.publickey = publickey; }
+
+	public String getPublickey2() { return publickey2; }
+
+	public void setPublickey2(String publickey2) { this.publickey2 = publickey2; }
 
 	public Collection<Permission> getPermissions() {
 		return permissions;
